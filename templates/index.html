@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Booking System</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header id="home">
+        <h1>Cozy Corner Eats</h1>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#dishes">Signature Dishes</a></li>
+                <li><a href="#book-table">Book a Table</a></li>
+                <li><a href="#reserved-tables">Reserved Tables</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <section id="about">
+            <h2>About Us</h2>
+            <p>Welcome to Our Restaurant! We take pride in serving delicious meals with the finest ingredients. Our experienced chefs create a culinary experience that delights your taste buds. Whether you're dining in or ordering for delivery, we ensure a memorable and satisfying experience. Join us for a journey of flavors and indulgence.</p>
+        </section>
+        
+
+
+        <section id="services">
+            <h2>Our Services</h2>
+            <div class="services-container">
+                {% for service in services %}
+                <div class="service">
+                    <img src="{{ url_for('static', filename=service.image) }}" alt="{{ service.name }}" class="service-image">
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        
+        
+        
+        <section id="dishes">
+            <h2>Signature Dishes</h2>
+            <div class="dish-container">
+                {% for dish in dishes %}
+                <div class="dish">
+                    <img src="{{ url_for('static', filename=dish.image) }}" alt="{{ dish.name }}" class="dish-image">
+                    <h3>{{ dish.name }}</h3>
+                    <p>{{ dish.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        
+
+
+        <section id="book-table" class="left-aligned-section">
+            <h2>Book a Table</h2>
+            <form id="book-form" action="/" method="post">
+                <label for="table_number">Table Number:</label>
+                <input type="text" id="table_number" name="table_number">
+                <button type="submit" id="book-button">Book Table</button>
+            </form>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="close-modal">&times;</span>
+                    <h2>Book a Table</h2>
+                    <form id="book-form" action="/book_table" method="post">
+                        <label for="table_number">Table Number:</label>
+                        <input type="text" id="table_number" name="table_number">
+                        <button type="submit" id="book-button">Book Table</button>
+                    </form>
+                    <!-- Success and Error Messages -->
+                    <div class="success-message" id="success-message"></div>
+                    <div class="error-message" id="error-message"></div>
+                </div>
+            
+            <!-- Success and Error Messages -->
+            <div class="success-message" id="success-message">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            {% if category == 'success' %}
+                                <div class="success">{{ message }}</div>
+                            {% elif category == 'error' %}
+                                <div class="error">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </section>
+
+        <section id="reserved-tables">
+            <h2>Reserved Tables</h2>
+            <ul class="booked-tables">
+                {% for table in booked_tables %}
+                <li>Table {{ table }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        
+    </div>
+</body>
+</html>
